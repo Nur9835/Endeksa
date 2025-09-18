@@ -5,15 +5,15 @@ import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import pages.HomePage;
 import pages.LoginPage;
-import pages.ProfilePage;
+import pages.UserPage;
 import utils.Driver;
-import utils.ReusableMethods;
+
 import static utils.ReusableMethods.*;
 
 public class Login_Stepdef {
     HomePage homePage=new HomePage(Driver.getDriver());
     LoginPage loginPage= new LoginPage(Driver.getDriver());
-    ProfilePage profilePage= new ProfilePage(Driver.getDriver());
+    UserPage userPage= new UserPage(Driver.getDriver());
 
 
     @Given("Web sitesine gidilir")
@@ -36,7 +36,7 @@ public class Login_Stepdef {
     public void hesabaGirişYaptığıDoğrulanır(String arg0) throws InterruptedException {
         homePage.clickSettingMenu();
         wait_second(5);
-        profilePage.assertEmailInputValue(arg0);
+        userPage.assertEmailInputValue(arg0);
     }
 
     @And("E-posta alanına {string} Parola alanına {string} girilir ve Giriş Yap butonu tıklanır")
@@ -53,15 +53,12 @@ public class Login_Stepdef {
     @And("Telefon numarası alanına {string} girilir")
     public void telefonNumarasıAlanınaGirilir(String arg0) {
         loginPage.setPhoneNumber(arg0);
-
     }
 
     @And("Ücretsiz Kaydol Giriş Yap butonu tıklanır")
     public void ücretsizKaydolGirişYapButonuTıklanır() throws InterruptedException {
         loginPage.clickPhoneWithLoginButton();
         wait_second(5);
-
-
 
     }
 
@@ -73,12 +70,7 @@ public class Login_Stepdef {
     }
 
 
-    @Then("Hesaba telefon numarası ile {string} giriş yaptığı doğrulanır")
-    public void hesabaTelefonNumarasıIleGirişYaptığıDoğrulanır(String arg0) throws InterruptedException {
-        homePage.clickSettingMenu();
-        wait_second(5);
-        profilePage.assertPhoneNumberInputValue(arg0);
-    }
+
 
 
 }

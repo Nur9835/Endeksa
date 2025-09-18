@@ -1,6 +1,7 @@
 package pages;
-import org.openqa.selenium.WebElement;
+
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 import utils.Driver;
@@ -8,17 +9,25 @@ import utils.Driver;
 import static org.testng.Assert.assertEquals;
 import static utils.ReusableMethods.wait_second;
 
-public class ProfilePage {
+public class UserPage {
 
-    public ProfilePage(WebDriver driver){
+    public UserPage(WebDriver driver){
         PageFactory.initElements(Driver.getDriver(),this);
     }
+
+    @FindBy(xpath = "//input[@id='phone-nput']")
+    private WebElement phoneInput;
+
+
+
+    @FindBy(xpath = "//span[normalize-space()='Kullanılan telefon numarası']")
+    private WebElement usedPhoneWarning;
 
     @FindBy(xpath = "//input[@id='mail-input']")
     private WebElement emailInput;
 
-    @FindBy(id = "phone-nput")
-    private WebElement phonenumberInput;
+    @FindBy(xpath = "//a[.//span[text()='Hesabı Sil']]")
+    private WebElement deleteAccountButton;
 
 
     public void assertEmailInputValue(String expectedText) {
@@ -35,7 +44,25 @@ public class ProfilePage {
                 + expectedText.substring(6,8) + " "
                 + expectedText.substring(8,10);
 
-        assertEquals(phonenumberInput.getAttribute("value"), formattedExpected, "Telefon numarası  eşleşmiyor!");
+        assertEquals(phoneInput.getAttribute("value"), formattedExpected, "Telefon numarası  eşleşmiyor!");
     }
+
+
+
+    public void setPhoneInput(String phonenumber){
+        wait_second(3);
+        phoneInput.sendKeys(phonenumber);
+    }
+
+    public WebElement getusedPhoneWarning() {
+        return usedPhoneWarning;
+    }
+
+
+    public void goToDeleteAccountPanel() {
+        deleteAccountButton.click();
+
+    }
+
 
 }

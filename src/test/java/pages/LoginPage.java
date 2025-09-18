@@ -38,6 +38,10 @@ public class LoginPage {
     @FindBy(xpath = "//a[@href='/tr/register']")
     private WebElement registerLink;
 
+
+
+
+
     public void goToRegisterPage() {
         registerLink.click();
     }

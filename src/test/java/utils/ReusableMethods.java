@@ -10,6 +10,7 @@ import java.time.Duration;
 
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
+import org.testng.Assert;
 
 public class ReusableMethods {
 
@@ -23,6 +24,36 @@ public class ReusableMethods {
         byte[] screen = ((TakesScreenshot) Driver.getDriver()).getScreenshotAs(OutputType.BYTES);
         Allure.addAttachment("Step Screenshot", new ByteArrayInputStream(screen));
     }
+
+    public static boolean isElementDisplayed(WebElement element) {
+        try {
+            return element.isDisplayed();
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
+    public static void assertWarningVisible(WebElement element, String warningName) {
+        Assert.assertTrue(
+                isElementDisplayed(element),
+                warningName + " uyarısı görünmeli!"
+        );
+    }
+
+    public static void assertWarningNotVisible(WebElement element, String warningName) {
+        Assert.assertFalse(
+                isElementDisplayed(element),
+                warningName + " uyarısı görünmemeli!"
+        );
+    }
+
+    public static void assertButtonNotVisible(WebElement button, String buttonName) {
+        Assert.assertFalse(
+                isElementDisplayed(button),
+                buttonName + " butonu görünmemeli!"
+        );
+    }
+
 
     public static void moveToElementWithAction(WebElement element) {
         Actions action = new Actions(Driver.getDriver());
