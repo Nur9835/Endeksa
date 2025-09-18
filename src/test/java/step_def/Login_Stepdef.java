@@ -3,6 +3,7 @@ import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
+import pages.DeleteAccountPage;
 import pages.HomePage;
 import pages.LoginPage;
 import pages.UserPage;
@@ -14,7 +15,7 @@ public class Login_Stepdef {
     HomePage homePage=new HomePage(Driver.getDriver());
     LoginPage loginPage= new LoginPage(Driver.getDriver());
     UserPage userPage= new UserPage(Driver.getDriver());
-
+    DeleteAccountPage deleteAccountPage = new DeleteAccountPage (Driver.getDriver());
 
     @Given("Web sitesine gidilir")
     public void web_sitesine_gidilir() {
@@ -39,12 +40,6 @@ public class Login_Stepdef {
         userPage.assertEmailInputValue(arg0);
     }
 
-    @And("E-posta alanına {string} Parola alanına {string} girilir ve Giriş Yap butonu tıklanır")
-    public void ePostaAlanınaParolaAlanınaGirilirVeGirişYapButonuTıklanır(String arg0, String arg1) throws InterruptedException {
-        loginPage.fillLoginWithEmail(arg0,arg1);
-    }
-
-
     @When("Kaydol Giriş Yap butonu tıklanır")
     public void kaydolGirişYapButonuTıklanır() throws InterruptedException {
         homePage.clickSigninButton();
@@ -66,11 +61,72 @@ public class Login_Stepdef {
     public void smsDoğrulama() {
         //API sorgusu ile OTP bilgisi çekilemediği için manuel işlem devam edildi
         wait_second(30);
+    }
 
+    @Then("One or more validation errors occurred uyarısı alındığı doğrulanır")
+    public void oneOrMoreValidationErrorsOccurredUyarısıAlındığıDoğrulanır() {
+        assertWarningVisible(loginPage.getErrorMessage(), "One or more validation errors occurred");
     }
 
 
+    @Then("Hatalı parola veya e-posta adresi uyarısı alındığı doğrulanır")
+    public void hatalıParolaVeyaEPostaAdresiUyarısıAlındığıDoğrulanır() {
+        assertWarningVisible(loginPage.getErrorMessage2(), "Hatalı parola veya e-posta adresi");
+    }
 
 
+    @And("E-posta alanına {string} Parola alanına {string} girilir")
+    public void ePostaAlanınaParolaAlanınaGirilir(String arg0, String arg1) throws InterruptedException {
+        loginPage.fillLoginWithEmail(arg0,arg1);
+    }
 
+    @Then("Giriş yap butonunun disable tıklanamaz olduğu doğrulanır")
+    public void girişYapButonununDisableTıklanamazOlduğuDoğrulanır() {
+        assertButtonNotVisible(loginPage.getLoginButton(), "Giriş Yap");
+    }
+
+    @And("Ücretsiz Kaydol Giriş Yap butonunun disable tıklanamaz olduğu doğrulanır")
+    public void ücretsizKaydolGirişYapButonununDisableTıklanamazOlduğuDoğrulanır() {
+        assertButtonNotVisible(loginPage.getLoginButtonWithPhonenumber(), "Ücretsiz Kaydol Giriş Yap");
+    }
+
+    @Then("Hesaba telefon numarası ile {string} giriş yaptığı doğrulanır")
+    public void hesabaTelefonNumarasıIleGirişYaptığıDoğrulanır(String arg0) throws InterruptedException {
+        homePage.clickSettingMenu();
+        wait_second(5);
+        userPage.assertPhoneNumberInputValue(arg0);
+    }
+
+    @And("sms doğrulamada hatalı kod yazılır")
+    public void smsDoğrulamadaHatalıKodYazılır() {
+        //MANUEL HATALI GİRİŞ YAPILIR
+        wait_second(30);
+    }
+
+
+    @Then("Hatalı OTP kodu. Lütfen tekrar deneyin uyarısı alındığı doğrulanır")
+    public void hatalıOTPKoduLütfenTekrarDeneyinUyarısıAlındığıDoğrulanır() {
+        assertWarningVisible(loginPage.getErrorOTP(), "Hatalı OTP kodu. Lütfen tekrar deneyin");
+    }
+
+    @When("Profil sayfasındaki Hesabı Sil butonuna tıklanır")
+    public void profilSayfasındakiHesabıSilButonunaTıklanır() {
+        userPage.goToDeleteAccountPanel();
+    }
+
+    @And("Çıkan popupdaki inputa {string} girilir")
+    public void çıkanPopupdakiInputaGirilir(String arg0) {
+        deleteAccountPage.setDeleteAccountConfirmationInput(arg0);
+
+    }
+
+    @And("Sil butonunun enable olduğu doğrulanır ve tıklanır")
+    public void silButonununEnableOlduğuDoğrulanırVeTıklanır() throws InterruptedException {
+        deleteAccountPage.clickDeleteAccountButton();
+    }
+
+    @And("Giriş Yap butonu tıklanır")
+    public void girişYapButonuTıklanır() throws InterruptedException {
+        loginPage.clickLoginButton();
+    }
 }

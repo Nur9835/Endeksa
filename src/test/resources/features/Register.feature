@@ -1,8 +1,6 @@
 @register1
 Feature:Kayıt Olma
-  Scenario Outline: E-mail ile  kayıt olmak (pozitif senaryo(sadece zorunlu alanlar),
-    negatif seneryolar (zorunlu alanların boş bırakılması, Ad ve Soyad alanları numeric
-  ))
+  Scenario Outline: E-mail ile  kayıt olmak (pozitif senaryo
     Given Web sitesine gidilir
     When Eposta ile giriş
     And Ücretsiz Kaydol bağlantısına tıklanır
@@ -13,17 +11,41 @@ Feature:Kayıt Olma
     And Gizlilik sözleşmesini onayla
     And Üye ve Ziyaretçi Aydınlatma sözleşmesini onayla
     And Kaydol butonuna tıklanır
+    And Eposta adresine gelen maildeki E-postamı Onayla butonu tıklanır
+    And Hesabınız aktive edildi. Devam etmek için lütfen giriş yapınınız. uyarısı alındığı doğrulanır
+
 
     Examples:
       | firstName | lastName | email               | password        |confirmPassword   |
       | Nur       | Kılıç    | hnk9833@gmail.com   | DENEMETest12345 |  DENEMETest12345 |
-      |           | Kılıç    | hnk9833@gmail.com   | DENEMETest12345 | DENEMETest12345  |
-      | Nur       |          | hnk9833@gmail.com   | DENEMETest12345 | DENEMETest12345  |
-      | Nur       | Kılıç    |                     | DENEMETest12345 | DENEMETest12345  |
-      | Nur       | Kılıç    | hnk9833@gmail.com   |                 | DENEMETest12345  |
-      | Nur       | Kılıç    | hnk9833@gmail.com   | DENEMETest12345 |                  |
-      | 101       | Kılıç    | hnk9833@gmail.com   | DENEMETest12345 |  DENEMETest12345 |
-      | Nur       | 1011     | hnk9833@gmail.com   | DENEMETest12345 |  DENEMETest12345 |
+
+
+@register2
+Scenario Outline: E-mail ile  kayıt olmak
+negatif seneryolar (zorunlu alanların boş bırakılması, Ad ve Soyad alanları numeric
+))
+  Given Web sitesine gidilir
+  When Eposta ile giriş
+  And Ücretsiz Kaydol bağlantısına tıklanır
+  Then Register sayfasına yönlendirildiği doğrulanır
+  When Ad alanına "<firstName>", Soyad alanına "<lastName>", E-posta alanına "<email>" Parola alanına "<password>" ve Parola Tekrarına "<confirmPassword>" girilir
+  And Sizi Hangisi En İyi Tanımlıyor? seçeneklerinden "Özel Sektör Çalışanıyım" seçilir
+  And Kullanım sözleşmesini onayla
+  And Gizlilik sözleşmesini onayla
+  And Üye ve Ziyaretçi Aydınlatma sözleşmesini onayla
+  And Kaydol butonuna tıklanır
+
+  Examples:
+    | firstName | lastName | email               | password        |confirmPassword   |
+    |           | Kılıç    | hnk9833@gmail.com   | DENEMETest12345 | DENEMETest12345  |
+    | Nur       |          | hnk9833@gmail.com   | DENEMETest12345 | DENEMETest12345  |
+    | Nur       | Kılıç    |                     | DENEMETest12345 | DENEMETest12345  |
+    | Nur       | Kılıç    | hnk9833@gmail.com   |                 | DENEMETest12345  |
+    | Nur       | Kılıç    | hnk9833@gmail.com   | DENEMETest12345 |                  |
+    | 101       | Kılıç    | hnk9833@gmail.com   | DENEMETest12345 |  DENEMETest12345 |
+    | Nur       | 1011     | hnk9833@gmail.com   | DENEMETest12345 |  DENEMETest12345 |
+
+
 
 
 
@@ -176,8 +198,6 @@ Feature:Kayıt Olma
       | Nur       | Kılıç    | hnk9833@gmail.com   |                 | DENEMETest12345  |
       | Nur       | Kılıç    | hnk9833@gmail.com   | DENEMETest12345 |                  |
 
-
-
   @register11
   Scenario Outline: E-mail ile  kayıt olmak ( Negatif Senaryo- Gizlilik sözleşmesi onaylanmadan)
     Given Web sitesine gidilir
@@ -227,16 +247,8 @@ Feature:Kayıt Olma
     @register13
     Scenario Outline: E-mail ile kayıt olunduktan sonra önceden kayıtlı telefon numarasını hesaba eklenmesi
      (aynı telefon numarasından hesabından birden fazla hesap olmamalı)
-      Given Web sitesine gidilir
-      When Eposta ile giriş
-      And Ücretsiz Kaydol bağlantısına tıklanır
-      Then Register sayfasına yönlendirildiği doğrulanır
-      When Ad alanına "<firstName>", Soyad alanına "<lastName>", E-posta alanına "<email>" Parola alanına "<password>" ve Parola Tekrarına "<confirmPassword>" girilir
-      And Sizi Hangisi En İyi Tanımlıyor? seçeneklerinden "Özel Sektör Çalışanıyım" seçilir
-      And Kullanım sözleşmesini onayla
-      And Gizlilik sözleşmesini onayla
-      And Üye ve Ziyaretçi Aydınlatma sözleşmesini onayla
-      And Kaydol butonuna tıklanır
+     @register1
+     @login1
       Then Hesaba giriş yapıldığı doğrulanır
       When Kullanıcı bilgileri sayfasına gidilir
       And  Kullanıcı bilgilerindeki Telefon numarası inputuna  telefon numarası "<phone>" alanına girilir

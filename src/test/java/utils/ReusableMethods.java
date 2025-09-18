@@ -90,6 +90,17 @@ public class ReusableMethods {
 
     }
 
+
+    public static void waitForToastMessage(String expectedText, int seconds) {
+        WebDriverWait wait = new WebDriverWait(Driver.getDriver(), Duration.ofSeconds(seconds));
+
+        // Toast görünene kadar bekle
+        WebElement toast = wait.until(ExpectedConditions.visibilityOfElementLocated(
+                By.xpath("//div[@class='toast-message']"))
+        );
+    }
+
+
     //Alert Wait
     public static void alertWait(int sayi) {
         WebDriverWait wait = new WebDriverWait(Driver.getDriver(), Duration.ofSeconds(sayi));

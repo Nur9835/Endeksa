@@ -18,8 +18,6 @@ public class UserPage {
     @FindBy(xpath = "//input[@id='phone-nput']")
     private WebElement phoneInput;
 
-
-
     @FindBy(xpath = "//span[normalize-space()='Kullanılan telefon numarası']")
     private WebElement usedPhoneWarning;
 
@@ -28,6 +26,9 @@ public class UserPage {
 
     @FindBy(xpath = "//a[.//span[text()='Hesabı Sil']]")
     private WebElement deleteAccountButton;
+
+    @FindBy(xpath = "//a[@ng-click='changePassword();']")
+    private WebElement changePasswordButton;
 
 
     public void assertEmailInputValue(String expectedText) {
@@ -47,8 +48,6 @@ public class UserPage {
         assertEquals(phoneInput.getAttribute("value"), formattedExpected, "Telefon numarası  eşleşmiyor!");
     }
 
-
-
     public void setPhoneInput(String phonenumber){
         wait_second(3);
         phoneInput.sendKeys(phonenumber);
@@ -58,11 +57,8 @@ public class UserPage {
         return usedPhoneWarning;
     }
 
+    public void goToDeleteAccountPanel() {deleteAccountButton.click();}
 
-    public void goToDeleteAccountPanel() {
-        deleteAccountButton.click();
-
-    }
-
+    public void  goToChangePassword(){changePasswordButton.click();}
 
 }

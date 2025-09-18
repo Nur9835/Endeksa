@@ -79,6 +79,9 @@ public class RegisterPage {
     @FindBy(xpath = "//span[normalize-space()='En az 1 rakam içermeli']")
     private WebElement mustContainAtLeastOneDigitWarning;
 
+    @FindBy(xpath = "//div[text()='Hesabınız aktive edildi. Devam etmek için lütfen giriş yapınınız.']")
+    private WebElement activedAccount;
+
     @FindBy(xpath = "//button[@ng-click='skipSyncing()']")
     private WebElement skipThisStepButton;
 
@@ -166,6 +169,11 @@ public class RegisterPage {
 
     public WebElement getMustContainAtLeastOneDigitWarning() {
         return mustContainAtLeastOneDigitWarning;
+    }
+
+
+    public WebElement getActivedAccount() {
+        return activedAccount;
     }
 
     public void clickRegisterButton() throws InterruptedException {

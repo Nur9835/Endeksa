@@ -146,4 +146,15 @@ public class Register_Stepdef {
         wait_second(30);
     }
 
+    @And("Eposta adresine gelen maildeki E-postamı Onayla butonu tıklanır")
+    public void epostaAdresineGelenMaildekiEPostamıOnaylaButonuTıklanır() {
+        //manuel
+    }
+
+    @And("Hesabınız aktive edildi. Devam etmek için lütfen giriş yapınınız. uyarısı alındığı doğrulanır")
+    public void hesabınızAktiveEdildiDevamEtmekIçinLütfenGirişYapınınızUyarısıAlındığıDoğrulanır() {
+        assertWarningVisible(registerPage.getActivedAccount(), "Hesabınız aktive edildi. Devam etmek için lütfen giriş yapınınız.");
+    }
+
+
 }

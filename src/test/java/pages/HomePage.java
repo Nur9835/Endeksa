@@ -26,6 +26,16 @@ public class HomePage {
     @FindBy(xpath = "//button[@aria-label='Tümünü Kabul Et']")
     private WebElement acceptCookiesButton;
 
+    @FindBy(xpath = "//a[@ng-click='$root.signOut()']")
+    public WebElement signOutLink;
+
+
+    public void logOut(){
+        Actions actions = new Actions(Driver.getDriver());
+        actions.moveToElement(profileMenu).perform();
+        wait_second(5);
+        signOutLink.click();
+    }
 
     public void clickSigninButton() throws InterruptedException {
         signinButton.click();

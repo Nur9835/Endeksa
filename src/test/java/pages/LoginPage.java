@@ -40,7 +40,15 @@ public class LoginPage {
 
 
 
+    @FindBy(xpath = "//span[contains(text(),'One or more validation errors occurred')]")
+    private WebElement errorMessage;
 
+
+    @FindBy(xpath = "//span[normalize-space()='Hatalı parola veya e-posta adresi']")
+    private WebElement errorMessage2;
+
+    @FindBy(xpath = "//span[contains(text(),'Hatalı OTP kodu')]")
+    private WebElement errorOTP;
 
     public void goToRegisterPage() {
         registerLink.click();
@@ -58,6 +66,14 @@ public class LoginPage {
     }
 
 
+    public void clickLoginButton () throws InterruptedException {
+        loginButton.click();
+        wait_second(10);
+
+    }
+
+
+
     public void setPhoneNumber(String phonenumber){
         wait_second(3);
         phoneNumberInput.sendKeys(phonenumber);
@@ -69,11 +85,30 @@ public class LoginPage {
         wait_second(3);
         passwordInput.sendKeys(password);
         wait_second(3);
-        loginButton.click();
-        wait_second(10);
+
     }
 
 
+    public WebElement getErrorMessage() {
+        return errorMessage;
+    }
 
 
+    public WebElement getErrorMessage2() {
+        return errorMessage2;
+    }
+
+
+    public WebElement getErrorOTP() {
+        return errorOTP;
+    }
+
+
+    public WebElement getLoginButton() {
+        return loginButton;
+    }
+
+    public WebElement getLoginButtonWithPhonenumber (){
+        return loginButtonWithPhonenumber;
+    }
 }

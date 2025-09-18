@@ -5,6 +5,8 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 import utils.Driver;
 
+import static utils.ReusableMethods.wait_second;
+
 public class DeleteAccountPage {
 
     public DeleteAccountPage(WebDriver driver){
@@ -19,6 +21,7 @@ public class DeleteAccountPage {
 
     public void setDeleteAccountConfirmationInput(String deleteString) {
         deleteAccountConfirmationInput.sendKeys(deleteString);
+        wait_second(3);
     }
 
     public void clickDeleteAccountButton () throws InterruptedException {
