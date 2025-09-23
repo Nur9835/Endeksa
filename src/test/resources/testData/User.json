@@ -1,4 +1,7 @@
 {
-  "email": "testnur9@gmail.com",
-  "password": "NURTEST06"
+  "firstName": "Nur",
+  "lastName": "Kılıç",
+  "email": "hnk9833@gmail.com",
+  "password": "DENEMETest12345",
+  "confirmPassword": "DENEMETest12345"
 }

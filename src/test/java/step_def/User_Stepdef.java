@@ -1,5 +1,6 @@
 package step_def;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
@@ -19,10 +20,13 @@ public class User_Stepdef {
     ChangePasswordPage changePasswordPage=new ChangePasswordPage(Driver.getDriver());
 
     @And("Kullanıcı bilgilerindeki Telefon numarası inputuna  telefon numarası {string} alanına girilir")
-    public void kullanıcıBilgilerindekiTelefonNumarasıInputunaTelefonNumarasıAlanınaGirilir(String arg0) {userPage.setPhoneInput(arg0);}
+    public void kullanıcıBilgilerindekiTelefonNumarasıInputunaTelefonNumarasıAlanınaGirilir(String arg0) {
+        userPage.setPhoneInput(arg0);
+    }
 
     @Then("Kullanılan telefon numarası uyarısı alındığı doğrulanır")
     public void kullanılanTelefonNumarasıUyarısıAlındığıDoğrulanır() {
+        wait_second(5);
         assertWarningVisible(userPage.getusedPhoneWarning(), "Kullanılan telefon numarası");
     }
 
@@ -46,7 +50,10 @@ public class User_Stepdef {
 
 
     @When("Profil sayfasındaki Parola Değiştir butonuna tıklanır")
-    public void profilSayfasındakiParolaDeğiştirButonunaTıklanır() {userPage.goToChangePassword();}
+    public void profilSayfasındakiParolaDeğiştirButonunaTıklanır() {
+        wait_second(5);
+        userPage.goToChangePassword();
+    }
 
 
     @And("Mevcut Parola alanına {string} ve Yeni Parola alanına {string} Yeni Parola Tekrarı alanına {string} girilir")
@@ -66,6 +73,7 @@ public class User_Stepdef {
 
     @When("Hesaptan çıkış yapılır")
     public void hesaptanÇıkışYapılır() {homePage.logOut();}
+
 
 
 

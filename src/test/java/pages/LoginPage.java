@@ -1,10 +1,15 @@
 package pages;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 import utils.Driver;
+
+import java.io.File;
+import java.io.IOException;
+
 import static utils.ReusableMethods.*;
 
 public class LoginPage {
@@ -50,6 +55,23 @@ public class LoginPage {
     @FindBy(xpath = "//span[contains(text(),'Hatalı OTP kodu')]")
     private WebElement errorOTP;
 
+
+    private LoginData loginData;
+
+
+    public void loadUserFromJson(String path) throws IOException {
+        ObjectMapper mapper = new ObjectMapper();
+        loginData = mapper.readValue(new File(path), LoginData.class);
+    }
+
+    public void fillLoginFromUser() throws InterruptedException {
+        fillLoginWithEmail(
+                loginData.getEmail(),
+                loginData.getPassword()
+        );
+    }
+
+
     public void goToRegisterPage() {
         registerLink.click();
     }
@@ -62,7 +84,7 @@ public class LoginPage {
 
     public void clickEmailButton () throws InterruptedException {
         emailButton.click();
-
+        wait_second(3);
     }
 
 
@@ -80,11 +102,11 @@ public class LoginPage {
     }
 
     public void fillLoginWithEmail(String email, String password) throws InterruptedException {
-        wait_second(5);
+        wait_second(1);
         emailInput.sendKeys(email);
-        wait_second(3);
+        wait_second(1);
         passwordInput.sendKeys(password);
-        wait_second(3);
+        wait_second(1);
 
     }
 
@@ -111,4 +133,5 @@ public class LoginPage {
     public WebElement getLoginButtonWithPhonenumber (){
         return loginButtonWithPhonenumber;
     }
+
 }

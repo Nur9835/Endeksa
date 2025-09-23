@@ -1,11 +1,15 @@
 package pages;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.openqa.selenium.Alert;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 import utils.Driver;
+
+import java.io.File;
+import java.io.IOException;
 
 import static utils.ReusableMethods.*;
 
@@ -44,7 +48,7 @@ public class RegisterPage {
     private WebElement kvkkCheckbox;
 
     @FindBy(xpath = "//button//span[text()='Kaydol']")
-    private WebElement registerButton;
+    public WebElement registerButton;
 
     @FindBy(id = "bireysel")
     private WebElement individualUserRadioButton;
@@ -95,6 +99,26 @@ public class RegisterPage {
     @FindBy(xpath = "//button[@type='submit']")
     private WebElement submitButton;
 
+    private RegisterData user;
+
+    public WebElement getEmailInput() {
+        return emailInput;
+    }
+
+    public void loadUserFromJson(String path) throws IOException {
+        ObjectMapper mapper = new ObjectMapper();
+        user = mapper.readValue(new File(path), RegisterData.class);
+    }
+
+    public void fillRegisterFromUser() throws InterruptedException {
+        fillRegisterWithEmail(
+                user.getFirstName(),
+                user.getLastName(),
+                user.getEmail(),
+                user.getPassword(),
+                user.getConfirmPassword()
+        );
+    }
 
     public void fillRegisterWithEmail(String firstName, String lastName, String email, String password, String confirmPassword) throws InterruptedException {
         firstNameInput.sendKeys(firstName);
@@ -104,12 +128,25 @@ public class RegisterPage {
         emailInput.sendKeys(email);
         wait_second(3);
         scroll(emailInput);
+        wait_second(3);
         passwordInput.sendKeys(password);
         wait_second(3);
         confirmPasswordInput.sendKeys(confirmPassword);
         wait_second(3);
 
     }
+
+    public void fillOnlyPassword( String password, String confirmPassword){
+        wait_second(3);
+        scroll(emailInput);
+        wait_second(3);
+        passwordInput.sendKeys(password);
+        wait_second(3);
+        confirmPasswordInput.sendKeys(confirmPassword);
+        wait_second(3);
+    }
+
+
 
     public void fillRegisterWithEmailwithPhone(String firstName, String lastName, String email, String password, String confirmPassword, String phone) throws InterruptedException {
         firstNameInput.sendKeys(firstName);
@@ -134,6 +171,7 @@ public class RegisterPage {
         lastNameInput.sendKeys(lastName);
         wait_second(3);
         scroll(submitButton);
+
         wait_second(3);
         submitButton.click();
         wait_second(5);
@@ -180,6 +218,10 @@ public class RegisterPage {
         wait_second(5);
         registerButton.click();
         wait_second(5);
+    }
+
+    public WebElement getRegisterButton() {
+        return registerButton;
     }
 
     public void acceptTerms() throws InterruptedException {

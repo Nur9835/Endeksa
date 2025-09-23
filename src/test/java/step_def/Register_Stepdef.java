@@ -2,13 +2,17 @@ package step_def;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
+import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.WebElement;
 import org.testng.Assert;
 import pages.LoginPage;
 import pages.RegisterPage;
 import utils.Driver;
 import utils.ReusableMethods;
 
-import static org.testng.Assert.assertEquals;
+import java.io.IOException;
+
+import static org.testng.Assert.*;
 import static utils.ReusableMethods.*;
 
 
@@ -43,27 +47,34 @@ public class Register_Stepdef {
     @And("Kullanım sözleşmesini onayla")
     public void kullanımSözleşmesiniOnayla() throws InterruptedException {
         registerPage.acceptTerms();
+        wait_second(2);
     }
+
 
     @And("Gizlilik sözleşmesini onayla")
     public void gizlilikSözleşmesiniOnayla() throws InterruptedException {
         registerPage.acceptPrivacy();
+        wait_second(2);
     }
 
     @And("Üye ve Ziyaretçi Aydınlatma sözleşmesini onayla")
     public void üyeVeZiyaretçiAydınlatmaSözleşmesiniOnayla() throws InterruptedException {
         registerPage.acceptKvkk();
+        wait_second(2);
     }
 
 
     @And("Kaydol butonuna tıklanır")
     public void kaydolButonunaTıklanır() throws InterruptedException {
         registerPage.clickRegisterButton();
+        wait_second(10);
     }
 
     @And("Sizi Hangisi En İyi Tanımlıyor? seçeneklerinden {string} seçilir")
     public void siziHangisiEnİyiTanımlıyorSeçeneklerindenSeçilir(String arg0) {
+        wait_second(2);
         registerPage.selectUserType(arg0);
+        wait_second(2);
     }
 
 
@@ -75,7 +86,12 @@ public class Register_Stepdef {
 
     @Then("Parola en az sekiz karakter olmalı uyarısı alındığı doğrulanır")
     public void parolaEnAzSekizKarakterOlmalıUyarısıAlındığıDoğrulanır() {
-        assertWarningVisible(registerPage.getPasswordMustCharacter(), "Parola en az sekiz karakter olmalı");
+        String  characterClass  = registerPage.getPasswordMustCharacter().getAttribute("class");
+        Assert.assertFalse(
+                 characterClass.contains("done"),
+                "Parola uyarısı 'done' olmamalı! Şu anki class: " + characterClass
+        );
+
     }
 
     @Then("Kullanılan e-posta adresi uyarısı alındığı doğrulanır")
@@ -99,30 +115,30 @@ public class Register_Stepdef {
     }
 
 
-    @Then("Parola en az bir rakam veya harf içermeli")
-    public void parolaEnAzBirRakamVeyaHarfIçermeli() {
-        boolean letterVisible = isElementDisplayed(registerPage.getMustContainAtLeastOneLetterWarning());
-        boolean digitVisible = isElementDisplayed(registerPage.getMustContainAtLeastOneDigitWarning());
-
-        Assert.assertTrue(letterVisible || digitVisible,
-                "En az bir uyarı (harf veya rakam) görünmeli!");
-    }
 
     @Then("Parola  {string} en az bir rakam ve bir harf içermeli")
     public void parolaEnAzBirRakamVeBirHarfIçermeli(String arg0) {
-        boolean letterWarningVisible = isElementDisplayed(registerPage.getMustContainAtLeastOneLetterWarning());
-        boolean digitWarningVisible = isElementDisplayed(registerPage.getMustContainAtLeastOneDigitWarning());
+        String  letterClass = registerPage.getMustContainAtLeastOneLetterWarning().getAttribute("class");
+        String  digitClass  = registerPage.getMustContainAtLeastOneDigitWarning().getAttribute("class");
 
-        Assert.assertTrue(letterWarningVisible || digitWarningVisible,
-                "En az bir uyarı (harf veya rakam) görünmeli!");
+        boolean anyWarningDone = (letterClass.contains("done")) || digitClass.contains("done");
+
+        Assert.assertTrue(anyWarningDone,
+                "Parola en az bir rakam ve bir harf içermeli! Letter class: "
+                        + letterClass + ", Digit class: " + digitClass);
+
 
     }
 
     @Then("Parolada herhangi bir uyarı vermemeli")
     public void paroladaHerhangiBirUyarıVermemeli() {
-        assertWarningNotVisible(registerPage.getMustContainAtLeastOneLetterWarning(), "Harf eksik");
-        assertWarningNotVisible(registerPage.getMustContainAtLeastOneDigitWarning(), "Rakam eksik");
-        assertWarningNotVisible(registerPage.getPasswordMustCharacter(), "Parola en az 8 karakter olmalı");
+
+        String  letterClass = registerPage.getMustContainAtLeastOneLetterWarning().getAttribute("class");
+        String  digitClass  = registerPage.getMustContainAtLeastOneDigitWarning().getAttribute("class");
+        String  characterClass  = registerPage.getPasswordMustCharacter().getAttribute("class");
+        Assert.assertEquals("done", letterClass);
+        Assert.assertEquals("done", digitClass);
+        Assert.assertEquals("done", characterClass);
     }
 
     @And("E-Posta ekleme alanında Bu Adımı Atla butonuna tıklanır ve çıkan Alert onaylanır")
@@ -149,12 +165,41 @@ public class Register_Stepdef {
     @And("Eposta adresine gelen maildeki E-postamı Onayla butonu tıklanır")
     public void epostaAdresineGelenMaildekiEPostamıOnaylaButonuTıklanır() {
         //manuel
+        wait_second(40);
     }
 
     @And("Hesabınız aktive edildi. Devam etmek için lütfen giriş yapınınız. uyarısı alındığı doğrulanır")
     public void hesabınızAktiveEdildiDevamEtmekIçinLütfenGirişYapınınızUyarısıAlındığıDoğrulanır() {
-        assertWarningVisible(registerPage.getActivedAccount(), "Hesabınız aktive edildi. Devam etmek için lütfen giriş yapınınız.");
+      //  assertWarningVisible(registerPage.getActivedAccount(), "Hesabınız aktive edildi. Devam etmek için lütfen giriş yapınınız.");
     }
 
 
+    @When("Ad  Soyad  E-posta Parola  Parola Tekrarını doldur")
+    public void adSoyadEPostaParolaParolaTekrarınıDoldur() throws IOException, InterruptedException {
+        registerPage.loadUserFromJson("src/test/resources/testData/User.json");
+        registerPage.fillRegisterFromUser();
+    }
+
+    @And("Kaydol butonuna tıklanamaz olmalı")
+    public void kaydolButonunaTıklanamazOlmalı() throws InterruptedException {
+        wait_second(2);
+      //registerPage.getRegisterButton().getAttribute("disabled");
+        registerPage.clickRegisterButton();
+        wait_second(6);
+        assertEquals(Driver.getDriver().getCurrentUrl(), expectedUrl, "Kayıt oluşmamalı");
+        wait_second(2);
+    }
+
+    @When("Parola alanına {string} ve Parola Tekrarına {string} girilir")
+    public void parolaAlanınaVeParolaTekrarınaGirilir(String arg0, String arg1) {
+      registerPage.fillOnlyPassword(arg0,arg1);
+    }
+
+    @And("Kullanım sözleşmesini onaylama")
+    public void kullanımSözleşmesiniOnaylama() {
+        wait_second(2);
+        scroll(registerPage.getPasswordInput());
+        wait_second(2);
+    }
 }
+

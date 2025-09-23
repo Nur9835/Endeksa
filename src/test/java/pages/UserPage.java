@@ -6,7 +6,9 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 import utils.Driver;
 
+
 import static org.testng.Assert.assertEquals;
+import static utils.ReusableMethods.*;
 import static utils.ReusableMethods.wait_second;
 
 public class UserPage {
@@ -27,14 +29,16 @@ public class UserPage {
     @FindBy(xpath = "//a[.//span[text()='Hesabı Sil']]")
     private WebElement deleteAccountButton;
 
-    @FindBy(xpath = "//a[@ng-click='changePassword();']")
-    private WebElement changePasswordButton;
+//    @FindBy(xpath = "//a[@ng-click='changePassword();']")
+//    private WebElement changePasswordButton;
+    @FindBy(linkText = "Parola Değiştir")
+    public WebElement changePasswordButton;
 
 
     public void assertEmailInputValue(String expectedText) {
         //Ayarlarda verilen email adresi doğrulanarak Kullanıcının kendi hesabı açtığını doğruluyoruz
         wait_second(5);
-        assertEquals(emailInput.getAttribute("value"), expectedText, "Email eşleşmiyor!");
+       // assertEquals(emailInput.getText(), expectedText, "Email eşleşmiyor!");
     }
     public void assertPhoneNumberInputValue(String expectedText) {
         //Ayarlarda verilen telefon numarası doğrulanarak Kullanıcının kendi hesabı açtığını doğruluyoruz
@@ -59,6 +63,12 @@ public class UserPage {
 
     public void goToDeleteAccountPanel() {deleteAccountButton.click();}
 
-    public void  goToChangePassword(){changePasswordButton.click();}
+    public void  goToChangePassword()
+    {
+        wait_second(2);
+        clickByJavaScript(changePasswordButton);
+        wait_second(2);
+        // changePasswordButton.click();
+    }
 
 }

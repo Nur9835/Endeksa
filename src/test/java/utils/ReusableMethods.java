@@ -40,6 +40,19 @@ public class ReusableMethods {
         );
     }
 
+    public static boolean isConditionMet(WebElement element) {
+        try {
+            String classAttr = element.getAttribute("class");
+            return classAttr != null && classAttr.contains("done");
+        } catch (NoSuchElementException e) {
+            return false; // Element DOM’da yoksa şart sağlanmamış
+        }
+    }
+
+
+
+
+
     public static void assertWarningNotVisible(WebElement element, String warningName) {
         Assert.assertFalse(
                 isElementDisplayed(element),
@@ -65,6 +78,8 @@ public class ReusableMethods {
             e.printStackTrace();
         }
     }
+
+
 
     //HARD WAIT METHOD
     public static void wait_second(int saniye) {

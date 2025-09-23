@@ -1,10 +1,18 @@
 package pages;
+import org.openqa.selenium.By;
+import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import utils.Driver;
 import org.openqa.selenium.interactions.Actions;
+
+import java.time.Duration;
+import java.util.NoSuchElementException;
+
 import static utils.ReusableMethods.*;
 
 public class HomePage {
@@ -39,7 +47,7 @@ public class HomePage {
 
     public void clickSigninButton() throws InterruptedException {
         signinButton.click();
-
+        wait_second(3);
     }
 
     public void clickSettingMenu() throws InterruptedException {
@@ -50,8 +58,26 @@ public class HomePage {
     }
 
     public void acceptCookies() {
-        if(acceptCookiesButton.isDisplayed() && acceptCookiesButton.isEnabled()) {
-            acceptCookiesButton.click();
+        wait_second(3);
+        try {
+            if(acceptCookiesButton.isDisplayed() && acceptCookiesButton.isEnabled()) {
+                wait_second(3);
+                acceptCookiesButton.click();
+                wait_second(3);
+            }
+        } catch (NoSuchElementException e) {
+            // Buton yoksa hiçbir şey yapma
+        }
+    }
+
+    public void acceptCookies2() {
+        try {
+            WebDriverWait wait = new WebDriverWait(Driver.getDriver(), Duration.ofSeconds(3));
+            WebElement acceptButton = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//button[@aria-label='Tümünü Kabul Et']")));
+            acceptButton.click();
+            wait_second(1);
+        } catch (TimeoutException e) {
+            // Buton yoksa test kırılmasın, devam et
         }
     }
 

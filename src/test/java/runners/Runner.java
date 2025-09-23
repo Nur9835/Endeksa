@@ -15,7 +15,7 @@ import org.junit.runner.RunWith;
         glue = {"step_def", "hooks"},
         dryRun = false,
         monochrome = false,
-        tags = "@register"   // sadece @login taglı senaryolar çalışır
+        tags = "@user2"   // sadece @login taglı senaryolar çalışır
 )
 public class Runner {
 }

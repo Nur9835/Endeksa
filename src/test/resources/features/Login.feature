@@ -12,22 +12,21 @@ Feature:Login
       |  hnk9833@gmail.com   | DENEMETest12345   |
 
 
-
-  @login2
-  Feature:Login
-  Scenario Outline: E-mail ile hesaba giriş Negatif Senaryo- (Önceden kayıtlı olmayan e-posta ile giriş yapılması, E-posta alanının boş bırakılması)
+  @login7
+  Scenario Outline: Telefon numarası ile hesaba giriş(Negatif senaryo- Eksik/Hatalı telefon numarası, Telefon numarası boş bırakılması )
     Given Web sitesine gidilir
-    When Eposta ile giriş
-    And  E-posta alanına "<email>" Parola alanına "<password>" girilir
-    Then One or more validation errors occurred uyarısı alındığı doğrulanır
-    Examples:
-      | email                | password         |
-      |  hnk-98@hotmail.com  | 12345            |
-      |  hnk-98@hotmail.com  | TestDeneme22     |
-      |                      | DENEMETest12345  |
+    When Kaydol Giriş Yap butonu tıklanır
+    And Telefon numarası alanına "<phone>" girilir
+    And Ücretsiz Kaydol Giriş Yap butonunun disable tıklanamaz olduğu doğrulanır
 
-  @login2
-  Feature:Login
+    Examples:
+      | phone          |
+      |  55555555      |
+      |  abcddef       |
+      |  abcd222       |
+      |                |
+
+  @login3
   Scenario Outline: E-mail ile hesaba giriş Negatif Senaryo- (Doğru e-posta boş Parola, Doğru e-posta yanlış parola)
     Given Web sitesine gidilir
     When Eposta ile giriş
@@ -41,22 +40,7 @@ Feature:Login
       |  hnk9833@gmail.com  | 12345678      |
 
 
-
-  @login2
-  Feature:Login
-  Scenario Outline: E-mail ile hesaba giriş Negatif Senaryo- Hatalı/Eksik e-posta adresi ile
-    Given Web sitesine gidilir
-    When Eposta ile giriş
-    And  E-posta alanına "<email>" Parola alanına "<password>" girilir
-    Then Hatalı parola veya e-posta adresi uyarısı alındığı doğrulanır
-    Examples:
-      | email                | password       |
-      |  hnk9833@gmail.co    |DENEMETest12345 |
-
-
-
-
-  @login2
+  @login5
   Scenario Outline: Telefon numarası ile hesaba giriş(pozitif senaryo)
     Given Web sitesine gidilir
     When Kaydol Giriş Yap butonu tıklanır
@@ -69,9 +53,20 @@ Feature:Login
       | phone          |
       |  5069846802    |
 
+  @login4
+  Scenario Outline: E-mail ile hesaba giriş Negatif Senaryo- Hatalı/Eksik e-posta adresi ile
+    Given Web sitesine gidilir
+    When Eposta ile giriş
+    And  E-posta alanına "<email>" Parola alanına "<password>" girilir
+    Then Hatalı parola veya e-posta adresi uyarısı alındığı doğrulanır
+    Examples:
+      | email                | password       |
+      |  hnk9833@gmail.co    |DENEMETest12345 |
 
 
-  @login2
+
+
+  @login6
   Scenario Outline: Telefon numarası ile hesaba giriş(Negatif senaryo- Doğrulama kodu yanlış girilmesi sonucu)
     Given Web sitesine gidilir
     When Kaydol Giriş Yap butonu tıklanır
@@ -86,22 +81,9 @@ Feature:Login
 
 
 
-  @login2
-  Scenario Outline: Telefon numarası ile hesaba giriş(Negatif senaryo- Eksik/Hatalı telefon numarası, Telefon numarası boş bırakılması )
-    Given Web sitesine gidilir
-    When Kaydol Giriş Yap butonu tıklanır
-    And Telefon numarası alanına "<phone>" girilir
-    And Ücretsiz Kaydol Giriş Yap butonunun disable tıklanamaz olduğu doğrulanır
-
-    Examples:
-      | phone          |
-      |  55555555      |
-      |  abcddef       |
-      |  abcd222       |
-      |                |
 
 
-  @login2
+  @login8
   Scenario Outline: Önceden kayıtlı olmayan telefon numarası ile giriş yapılmaya çalışılması durumunda Register işlemleri başlar (E-posta girmeden)
     Given Web sitesine gidilir
     When Kaydol Giriş Yap butonu tıklanır
@@ -118,7 +100,7 @@ Feature:Login
       |  5069846802    | Nur       | Kılıç    |
 
 
-  @login2
+  @login9
   Scenario Outline: Önceden kayıtlı olmayan telefon numarası ile giriş yapılmaya çalışılması durumunda Register işlemleri başlar (E-posta girilerek -Doğrulamadan )
     Given Web sitesine gidilir
     When Kaydol Giriş Yap butonu tıklanır
@@ -136,7 +118,7 @@ Feature:Login
 
 
 
-@login33
+@login10
 Scenario Outline: Mevcut Hesap Silme işlemi gerçekleştikten sonra silinen e-posta ile giriş yapılmaya çalışılması
   Given Web sitesine gidilir
   When Eposta ile giriş
@@ -158,7 +140,7 @@ Scenario Outline: Mevcut Hesap Silme işlemi gerçekleştikten sonra silinen e-p
 
 
 
-  @login33
+  @login11
   Scenario Outline: Mevcut Hesap Silme işlemi gerçekleştikten sonra silinen telefon numarası ile giriş yapılmaya çalışılması durumunda Register sayfasına yönlendiir
   (E-posta adresi girmeden)
     Given Web sitesine gidilir
@@ -186,7 +168,19 @@ Scenario Outline: Mevcut Hesap Silme işlemi gerçekleştikten sonra silinen e-p
 
 
 
-  @login33
+  @login2
+  Scenario Outline: E-mail ile hesaba giriş Negatif Senaryo- (Önceden kayıtlı olmayan e-posta ile giriş yapılması, E-posta alanının boş bırakılması)
+    Given Web sitesine gidilir
+    When Eposta ile giriş
+    And  E-posta alanına "<email>" Parola alanına "<password>" girilir
+    Then One or more validation errors occurred uyarısı alındığı doğrulanır
+    Examples:
+      | email                | password         |
+      |  hnk-98@hotmail.com  | 12345            |
+      |  hnk-98@hotmail.com  | TestDeneme22     |
+      |                      | DENEMETest12345  |
+
+  @login12
   Scenario Outline: Mevcut Hesap Silme işlemi gerçekleştikten sonra silinen telefon numarası ile giriş yapılmaya çalışılması durumunda Register sayfasına yönlendiir
   (E-posta adresi girilerek)
     Given Web sitesine gidilir

@@ -33,11 +33,11 @@ public class ChangePasswordPage {
 
     public void fillChangePassword(String password, String newPassword, String newPasswordConfirm) throws InterruptedException {
         currentPasswordInput.sendKeys(password);
-        wait_second(3);
+        wait_second(1);
         newPasswordInput.sendKeys(newPassword);
-        wait_second(3);
+        wait_second(1);
         newPasswordConfirmInput.sendKeys(newPasswordConfirm);
-        wait_second(3);
+        wait_second(1);
     }
 
     public void clickSubmitButton() {submitButton.click();}
